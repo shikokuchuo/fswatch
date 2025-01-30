@@ -138,7 +138,7 @@ namespace fsw
         scan(link_path, fn);
         return;
       }
-
+#ifndef _WIN32
       if (!accept_path(path)) return;
 
       // TODO: C++17 doesn't standardize access to ctime, so we need to keep
@@ -149,7 +149,7 @@ namespace fsw
       if (!add_path(path, fd_stat, fn)) return;
       if (!recursive) return;
       if (!S_ISDIR(fd_stat.st_mode)) return;
-
+#endif
       const auto entries = get_directory_entries(path);
 
       for (const auto& entry : entries)

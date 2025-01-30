@@ -108,11 +108,9 @@ endif (HAVE_PORT_H)
 
 check_cxx_symbol_exists(FindFirstChangeNotification windows.h HAVE_WINDOWS_HEADER)
 
-if (HAVE_WINDOWS_HEADER AND CYGWIN)
-    check_include_file_cxx(sys/cygwin.h HAVE_CYGWIN)
+if (HAVE_WINDOWS_HEADER)
 
-    if (HAVE_CYGWIN)
-        set(LIBFSWATCH_HEADER_FILES
+    set(LIBFSWATCH_HEADER_FILES
                 ${LIBFSWATCH_HEADER_FILES}
                 src/libfswatch/c++/windows/win_directory_change_event.hpp
                 src/libfswatch/c++/windows/win_error_message.hpp
@@ -120,8 +118,8 @@ if (HAVE_WINDOWS_HEADER AND CYGWIN)
                 src/libfswatch/c++/windows/win_paths.hpp
                 src/libfswatch/c++/windows/win_strings.hpp
                 src/libfswatch/c++/windows_monitor.hpp)
-
-        set(LIB_SOURCE_FILES
+                
+    set(LIB_SOURCE_FILES
                 ${LIB_SOURCE_FILES}
                 src/libfswatch/c++/windows/win_directory_change_event.cpp
                 src/libfswatch/c++/windows/win_error_message.cpp
@@ -129,9 +127,10 @@ if (HAVE_WINDOWS_HEADER AND CYGWIN)
                 src/libfswatch/c++/windows/win_paths.cpp
                 src/libfswatch/c++/windows/win_strings.cpp
                 src/libfswatch/c++/windows_monitor.cpp)
-        set(HAVE_WINDOWS ON CACHE BOOL "Enable Windows support")
-    endif (HAVE_CYGWIN)
-endif (HAVE_WINDOWS_HEADER AND CYGWIN)
+    
+    set(HAVE_WINDOWS ON CACHE BOOL "Enable Windows support")
+        
+endif (HAVE_WINDOWS_HEADER)
 
 if (APPLE)
     check_include_file_cxx(CoreServices/CoreServices.h HAVE_FSEVENTS_FILE_EVENTS)

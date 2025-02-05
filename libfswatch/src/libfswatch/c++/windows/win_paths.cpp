@@ -15,6 +15,7 @@
  */
 #include "win_paths.hpp"
 #include <windows.h>
+#include <vector>
 #include "../libfswatch_exception.hpp"
 #include "../../gettext_defs.h"
 
@@ -26,24 +27,20 @@ namespace fsw
   {
     wstring posix_to_win_w(string path)
     {
-       int pathlen = (int)path.length() + 1;
+       int pathlen = (int) path.length() + 1;
        int buflen = MultiByteToWideChar(CP_ACP, 0, path.c_str(), pathlen, 0, 0);
-       wchar_t* buf = new wchar_t[buflen];
-       MultiByteToWideChar(CP_ACP, 0, path.c_str(), pathlen, buf, buflen);
-       std::wstring result(buf);
-       delete[] buf;
-       return result;
+       std::vector<wchar_t> buf(buflen);
+       MultiByteToWideChar(CP_ACP, 0, path.c_str(), pathlen, buf.data(), buflen);
+       return std::wstring(buf.data());
     }
 
     string win_w_to_posix(wstring path)
     {
        int pathlen = (int)path.length() + 1;
        int buflen = WideCharToMultiByte(CP_ACP, 0, path.c_str(), pathlen, 0, 0, 0, 0);
-       char* buf = new char[buflen];
-       WideCharToMultiByte(CP_ACP, 0, path.c_str(), pathlen, buf, buflen, 0, 0);
-       std::string result(buf);
-       delete[] buf;
-       return result;
+       std::vector<char> buf(buflen);
+       WideCharToMultiByte(CP_ACP, 0, path.c_str(), pathlen, buf.data(), buflen, 0, 0);
+       return std::string(buf.data());
     }
   }
 }
